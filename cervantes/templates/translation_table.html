@@ -1,0 +1,38 @@
+<table class="table">
+    <thead>
+        <tr>
+            <th style="width: 0">Date</th>
+            <th style="width: 0">Status</th>
+            <th style="width: 0">Source</th>
+            <th style="width: 0">Target</th>
+            <th>Text</th>
+            <th>Translated</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for translation in translations %}
+        <tr>
+            <td>
+                {% with date = translation.date_created %}
+                {{ (date + date.utcoffset()).strftime('%Y-%m-%d %H:%I') }}
+                {% endwith %}
+            </td>
+            <td>
+                {% if translation.status == 'new' %}
+                <span class="badge badge-primary">Requested</span>
+                {% elif translation.status == 'translating' %}
+                <span class="badge badge-warning">Pending</span>
+                {% elif translation.status == 'completed' %}
+                <span class="badge badge-success">Translated</span>
+                {% else %}
+                <span class="badge badge-secondary">{{translation.status|capitalize}}</span>
+                {% endif %}
+            </td>
+            <td>{{translation.source_language}}</td>
+            <td>{{translation.target_language}}</td>
+            <td>{{translation.text}}</td>
+            <td>{{translation.translated_text|default('', true)}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
