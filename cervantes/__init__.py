@@ -1,22 +1,31 @@
 """
 This is the main package of the application.
 
-__init__.py
-    This module defines an application factory that returns a Flask
-    instance.
+    __init__.py
+        This module defines an application factory that returns a Flask
+        instance.
 
-config.py
-    This module defines the configuration objects used by the Flask
-    instance to configure itself.
+        Routes:
+            GET '/'
+                index
+                Render the main page of the application.
 
-models.py
-    This module initializes the SQLAlchemy object for communicating
-    with the database, and defines and registers the models that
-    abstract the data.
+    config.py
+        This module defines the configuration objects used by the Flask
+        instance to configure itself.
 
-translations.py
-    This module defines the 'translations' feature of the app as a
-    Flask blueprint. Defines the routes prefixed with '/translations'.
+    models.py
+        This module initializes the SQLAlchemy object for communicating
+        with the database, and defines and registers the models that
+        abstract the data.
+
+    translations.py
+        This module defines the 'translations' feature of the app as a
+        Flask blueprint. Defines the routes prefixed with '/translations'.
+
+    unbabelapi.py
+        This module defines the helper methods that make calls to the
+        Unbabale API.
 """
 
 
@@ -44,14 +53,16 @@ def create_app(testing=False):
     """
     # Create and configure the app
     app = Flask(__name__)
-    app.config.from_object(ProductionConfig)
+    app.config.from_object(ProductionConfig())
 
     # Override config if testing
     if testing:
-        app.config.from_object(TestingConfig)
+        app.config.from_object(TestingConfig())
 
     # Bind the SQLAlchemy database with the app
     db.init_app(app)
+    with app.app_context():
+        db.create_all()
 
     # Root level routes
     @app.route('/')

@@ -3,16 +3,16 @@ This module sits between the application and the data layer, abstracting
 the connection to the database with SQLAlchemy, and creates the models
 for the data stored in the database.
 
-db : SQLAlchemy
-    SQLAlchemy instantiation. This object represents the connection to the
-    database. It is created without an explicit app binding so that it can
-    be bound later in the Flask application factory. It knows about any
-    class that extends SQLAlchemy.Model and treats it as a model for
-    databse queries.
+    db : SQLAlchemy
+        SQLAlchemy instantiation. This object represents the connection to the
+        database. It is created without an explicit app binding so that it can
+        be bound later in the Flask application factory. It knows about any
+        class that extends SQLAlchemy.Model and treats it as a model for
+        databse queries.
 
-class Translation
-    Extends SQLAlchemy.Model. Model abstraction on top of the
-    'translations' table in the database.
+    class Translation
+        Extends SQLAlchemy.Model. Model abstraction on top of the
+        'translations' table in the database.
 """
 
 
@@ -37,35 +37,38 @@ class Translation(db.Model):
     API.
 
     Attributes:
-        __tablename__
+        __tablename__ : str = 'translations'
             SQLAlchemy attribute. Sets the name of the table in the
             database.
-        uid
+        uid : str
             Unique ID assigned by the Unbabel API.
-        status
+        status : str
             Status of the translation.
-        source_lang
+        source_lang : str
             Code for the language of the text to be translated.
-        target_lang
+        target_lang : str
             Code for the language of the translated text.
-        test
+        text : str
             Text to be translated.
-        translated_text
+        translated_text : str
             None if the text hasn't been translated yet. Translated
             text returned by Unbabel's API, otherwise.
-        text_length
+        text_length : int
             Length of the translated text, computed and stored as soon
             as the translated text is received. Storing this value
             makes it easier to order the results when needed.
-        date_created
+        date_created : datetime
             Timestamp of the creation of the translation request.
-        date_updated
+        date_updated : datetime
             Timestamp of the last update done to this translation
             request.
 
     Class Methods:
         get_all(cls)
             Return all the translations in the database.
+
+        get_all_pending(cls)
+            Return all the pending translations in the database.
 
     Instance Methods:
         dictify(self)
@@ -77,8 +80,8 @@ class Translation(db.Model):
 
     uid = sa.Column(sa.String(10), primary_key=True)
     status = sa.Column(sa.String(), nullable=False)
-    source_lang = sa.Column(sa.String(), nullable=False)
-    target_lang = sa.Column(sa.String(), nullable=False)
+    source_language = sa.Column(sa.String(), nullable=False)
+    target_language = sa.Column(sa.String(), nullable=False)
 
     text = sa.Column(sa.Text(), nullable=False)
     translated_text = sa.Column(sa.Text(), default=None)
@@ -99,6 +102,16 @@ class Translation(db.Model):
             sa.desc(cls.text_length)
         ).order_by(
             sa.desc(cls.date_updated)
+        ).all()
+
+    @classmethod
+    def get_all_pending(cls):
+        """
+        Return all translations that are in a pending status
+        ('new', 'translating').
+        """
+        return cls.query.filter(
+            cls.status.in_(['new', 'translating'])
         ).all()
 
     def dictify(self):
@@ -122,8 +135,9 @@ class Translation(db.Model):
         """
         Return the representation of the instance.
         """
-        return '<Translation [{source_lang} -> {target_lang}] "{text:.16}">'.format(
-            source_lang=self.source_lang,
-            target_lang=self.target_lang,
+        return '<Translation ({status}) [{source_lang} -> {target_lang}] "{text:.16}">'.format(
+            status=self.status,
+            source_lang=self.source_language,
+            target_lang=self.target_language,
             text=self.text
         )
