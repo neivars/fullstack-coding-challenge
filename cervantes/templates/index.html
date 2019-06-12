@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" initial-scale="1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Cervantes - English to Spanish Translation</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+</head>
+
+<body class="bg-light">
+    <header class="text-center mb-4 p-3 bg-primary">
+        <h1 class="display-3 text-light">Cervantes</h1>
+
+        <blockquote class="blockquote mb-3">
+            <p class="mb-1">¿Donde está la biblioteca? Me llamo T-Bone, la araña discoteca.</p>
+            <footer class="blockquote-footer text-light">Troy in <cite title="Community">Community</cite>, someone who
+                doesn't use Unbabel</footer>
+        </blockquote>
+    </header>
+
+    <main class="container">
+        <div class="row">
+            <section class="col-lg-9 order-lg-2">
+                <div id="alerts">
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-danger" role="alert">
+                        {{message}}
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                    {% endwith %}
+                </div>
+
+                <form id="translate-form" class="mb-3" action="/translations/" method="POST">
+                    <div class="form-group">
+                        <div class="form-row">
+                            <div class="col-6">
+                                <label for="source-language">From...</label>
+                                <select class="form-control" name="source-language" id="source-language" required
+                                    disabled>
+                                </select>
+                            </div>
+
+                            <div class="col-6">
+                                <label for="target-language">To...</label>
+                                <select class="form-control" name="target-language" id="target-language" required
+                                    disabled>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="text">Translate</label>
+                        <div class="input-group">
+                            <input class="form-control" type="text" name="text" id="text" placeholder="Enter text..."
+                                required>
+                            <div class="input-group-append">
+                                <input class="btn btn-primary" type="submit" value="Translate">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <article class="mb-3">
+                    <header class="mb-4">
+                        <h2 class="h2 text-center text-sm-left">Translation History</h2>
+                    </header>
+
+                    <div class="text-center d-block" id="translation-history">
+                        <div id="loading-spinner" class="spinner-border text-primary" style="height: 4rem; width: 4rem;"
+                            role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+
+                    <div id="translate-history"></div>
+                </article>
+            </section>
+
+            <aside class="col-lg-3 order-lg-1">
+                <img class="d-block mx-auto img-fluid" src="{{ url_for('static', filename='babelbot.png') }}"
+                    alt="Unbabel's robot mascot">
+
+                <p class="font-weight-bold">Why aren't my translations instantaneous?</p>
+                <p>Unbabel's translations are powered by state of the art technology, but go through <span
+                        class="font-weight-bold">human review</span> to ensure the highest quality possible. Don't
+                    worry, just keep refreshing - your translation should be ready soon!</p>
+            </aside>
+        </div>
+    </main>
+
+    <footer class="text-center small text-muted my-5">
+        <p class="mb-1">Created by <a href="https://neivars.com">Raul Neiva</a> for Unbabel's Fullstack Challenge
+        </p>
+        <p>Logo and robot &copy; <a href="https://unbabel.com">Unbabel</a></p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/createLoadingSpinner.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/createDangerAlert.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/submitForm.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/fetchTranslations.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/fetchLanguagePairs.js') }}"></script>
+</body>
+
+</html>
