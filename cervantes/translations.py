@@ -14,6 +14,12 @@ in a completed state, then no queries to the Unbabel API are made.
         Blueprint initialization. Routes all requests to '/translations'
         to its own routes.
 
+    function _update_translations
+        Private function in charge of taking a list of Transaction
+        records and passing them to the Unbabel API for updated
+        information, mutating the list with the fresh information,
+        if it exists.
+
     Routes:
         GET '/'
             get_translations
@@ -22,16 +28,10 @@ in a completed state, then no queries to the Unbabel API are made.
             add_translation
             Request a new translation, hit the Unbabel API, and, if
             all goes well, store the new Translation in the database.
-        GET '/language_pair'
+        GET '/language_pairs'
             get_language_pairs
             Return all available language pairs for translation in JSON
             format.
-    
-    function _update_translations
-        Private function in charge of taking a list of Transaction
-        records and passing them to the Unbabel API for updated
-        information, mutating the list with the fresh information,
-        if it exists.
 """
 
 
