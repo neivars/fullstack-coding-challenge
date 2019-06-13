@@ -21,6 +21,7 @@ from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 import sqlalchemy as sa
 
+
 db = SQLAlchemy()
 
 
@@ -44,9 +45,9 @@ class Translation(db.Model):
             Unique ID assigned by the Unbabel API.
         status : str
             Status of the translation.
-        source_lang : str
+        source_language : str
             Code for the language of the text to be translated.
-        target_lang : str
+        target_language : str
             Code for the language of the translated text.
         text : str
             Text to be translated.
@@ -63,15 +64,13 @@ class Translation(db.Model):
             Timestamp of the last update done to this translation
             request.
 
-    Class Methods:
-        get_all(cls)
+        classmethod get_all
             Return all the translations in the database.
 
-        get_all_pending(cls)
+        classmethod get_all_pending
             Return all the pending translations in the database.
 
-    Instance Methods:
-        dictify(self)
+        method dictify
             Turn a Translation instance into a Python dictionary
             for easy serialization.
     """
@@ -98,6 +97,7 @@ class Translation(db.Model):
         Return all translations, ordered by length of translated
         text (desc), and then date of last update (desc).
         """
+
         return cls.query.order_by(
             sa.desc(cls.text_length)
         ).order_by(
@@ -110,6 +110,7 @@ class Translation(db.Model):
         Return all translations that are in a pending status
         ('new', 'translating').
         """
+
         return cls.query.filter(
             cls.status.in_(['new', 'translating'])
         ).all()
@@ -119,11 +120,12 @@ class Translation(db.Model):
         Transform a table record into a dictionary of its attributes
         fit for serialization.
         """
+
         return {
             'uid': self.uid,
             'status': self.status,
-            'source_lang': self.source_lang,
-            'target_lang': self.target_lang,
+            'source_language': self.source_language,
+            'target_language': self.target_language,
             'text': self.text,
             'translated_text': self.translated_text,
             'text_length': self.text_length,
@@ -135,6 +137,7 @@ class Translation(db.Model):
         """
         Return the representation of the instance.
         """
+
         return '<Translation ({status}) [{source_lang} -> {target_lang}] "{text:.16}">'.format(
             status=self.status,
             source_lang=self.source_language,
