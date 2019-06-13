@@ -84,6 +84,12 @@ python -c "import os; print(os.urandom(16))"
 Set the `SECRET_KEY` keys for both production and testing inside `cervantes.yaml`. You can have the production and testing `SECRET_KEY`s be different, if you wish.
 
 
+### Unbabel API authorization
+Copy or rename `unbabelapi.example.yaml` into `unbabelapi.yaml`, open it and change the values of the `UNBABEL_USERNAME` and `UNBABEL_API_KEY` keys to the ones provided to you by your hiring manager at Unbabel.
+
+If you don't have one, consider buying one of them a beer or a coffee.
+
+
 ### Set up development server
 Flask can set up a development server at `127.0.0.1:5000` (by default). In order to spin up the server, Flask needs to know the project's entry point.
 
