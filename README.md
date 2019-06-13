@@ -25,11 +25,14 @@ git clone https://github.com/neivars/fullstack-coding-challenge.git cervantes
 
 The above will create a `cervantes` directory in your current directory and copy the project source code into it.
 
-With Python installed, it's wise to have a **Python environment** solution rolled up. I suggest [virtualenv](https://virtualenv.pypa.io/en/stable/), which you can install with `pip`.
+With Python installed, it's wise to have a **Python environment** solution rolled up. I suggest [virtualenv](https://virtualenv.pypa.io/en/stable/), which you can install with `pip` if you're on Windows.
 
+**💻 Windows**
 ```bash
 pip install virtualenv
 ```
+
+For Mac and Linux, please refer to your operating system's package manager and install `virtualenv`.
 
 This will install the virtualenv package globally. Next, spin up a Python environment in the directory where you cloned the repository to.
 
