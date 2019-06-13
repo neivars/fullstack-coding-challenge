@@ -165,6 +165,7 @@ def add_translation():
 
     except unbabelapi.UnbabelAPIError as exc:
         flash('Uh oh - Unbabel isn\'t picking up the phone. Try again later, please.')
+        return redirect(url_for('index'))
 
     try:
         # We have all inputs and the language pair is valid, so hit the Unbabel API
@@ -203,4 +204,5 @@ def get_language_pairs():
     try:
         return jsonify(unbabelapi.request_language_pairs().get('objects', []))
     except unbabelapi.UnbabelAPIError as exc:
-        pass
+        flash('Uh oh - Unbabel isn\'t picking up the phone. Try again later, please.')
+        return redirect(url_for('index'))
