@@ -78,7 +78,7 @@ Copy or rename `cervantes.example.yaml` into `cervantes.yaml`, open it and chang
 The web app needs a **secret key** to pass flashed session messages along back to the frontend. You can set it to any string you want, but a quick way to generate a random enough key is with Python itself.
 
 ```bash
-python -c 'import os; print(os.urandom(16))'
+python -c "import os; print(os.urandom(16))"
 ```
 
 Set the `SECRET_KEY` keys for both production and testing inside `cervantes.yaml`. You can have the production and testing `SECRET_KEY`s be different, if you wish.
